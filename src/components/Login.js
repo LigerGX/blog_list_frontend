@@ -1,7 +1,9 @@
 import { useState } from "react"
 import loginService from '../services/login'
+import blogService from '../services/blogs'
+import Notification from "./Notification"
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, notification, showNotification }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -22,15 +24,21 @@ const Login = ({ setUser }) => {
       setPassword('')
       setUser(user)
       window.localStorage.setItem('user', JSON.stringify(user))
+      blogService.setToken(user.token)
     } catch (error) {
+      showNotification(`${error.response.data.error}`, true)
       console.error(error.response.data)
     }
   }
 
   return (
     <div>
+      <header>
+        <h1>Blog Collection</h1>
+      </header>
       <form onSubmit={handleLogin}>
         <h2>Log in to application</h2>
+        {notification && <Notification notification={notification} />}
         <div>
           <label>Username: </label>
           <input name="username" value={username} onChange={handleChange} />
