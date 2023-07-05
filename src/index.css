@@ -66,3 +66,11 @@ input {
   margin-bottom: 16px;
   background-color:#faf8f8;
 }
+
+.blogContainer > p {
+  margin-bottom: 4px;
+}
+
+.blogContainer > button {
+  background-color: rgb(224, 86, 86);
+}

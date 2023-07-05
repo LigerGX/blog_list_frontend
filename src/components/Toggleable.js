@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle } from "react"
+import { useState, forwardRef, useImperativeHandle } from 'react'
 
 const Toggleable = forwardRef(({ children, name }, refs) => {
   const [visible, setVisible] = useState(false)
@@ -28,5 +28,7 @@ const Toggleable = forwardRef(({ children, name }, refs) => {
     </div>
   )
 })
+
+Toggleable.displayName = 'Toggleable'
 
 export default Toggleable

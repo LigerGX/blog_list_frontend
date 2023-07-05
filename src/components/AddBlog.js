@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 import blogService from '../services/blogs'
 
 const AddBlog = ({ blogs, setBlogs, showNotification, user }) => {
@@ -8,17 +8,17 @@ const AddBlog = ({ blogs, setBlogs, showNotification, user }) => {
 
   const handleChange = (e) => {
     switch (e.target.name) {
-      case 'title':
-        setTitle(e.target.value)
-        break
-      case 'author':
-        setAuthor(e.target.value)
-        break
-      case 'url':
-        setUrl(e.target.value)
-        break
-      default:
-        console.log('Should not see this')
+    case 'title':
+      setTitle(e.target.value)
+      break
+    case 'author':
+      setAuthor(e.target.value)
+      break
+    case 'url':
+      setUrl(e.target.value)
+      break
+    default:
+      console.log('Should not see this')
     }
   }
 
@@ -30,7 +30,7 @@ const AddBlog = ({ blogs, setBlogs, showNotification, user }) => {
       // on GET request user info is populated  but not POST request
       // so user info is manually added when setBlog is used
       // so that the submitter can be seen when blog is first added
-      setBlogs([...blogs, {...newBlog, user}])
+      setBlogs([...blogs, { ...newBlog, user }])
       showNotification(`New blog ${title} by ${author} added!`, false)
       setTitle('')
       setAuthor('')

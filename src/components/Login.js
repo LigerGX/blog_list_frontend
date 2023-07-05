@@ -1,14 +1,14 @@
-import { useState } from "react"
+import { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import Notification from "./Notification"
+import Notification from './Notification'
 
 const Login = ({ setUser, notification, showNotification }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const handleChange = (e) => {
-    if (e.target.name === "username") {
+    if (e.target.name === 'username') {
       setUsername(e.target.value)
     } else {
       setPassword(e.target.value)

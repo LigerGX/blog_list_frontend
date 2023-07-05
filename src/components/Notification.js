@@ -1,6 +1,6 @@
 const Notification = ({ notification }) => {
   return (
-    <div className={notification.error ? "notification error" : "notification"}>
+    <div className={notification.error ? 'notification error' : 'notification'}>
       <p>{notification.message}</p>
     </div>
   )
