@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import AddBlog from './components/AddBlog'
 import Notification from './components/Notification'
+import Toggleable from './components/Toggleable'
 import blogService from './services/blogs'
 
 const App = () => {
@@ -10,9 +11,12 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
 
+  const toggleableRef = useRef()
+
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs ) 
+    blogService.getAll().then(blogs => {
+      setBlogs(blogs) 
+    }
     )
   }, [])
 
@@ -52,7 +56,9 @@ const App = () => {
       </header>
       {notification && <Notification notification={notification} />}
 
-      <AddBlog blogs={blogs} setBlogs={setBlogs} showNotification={showNotification} />
+      <Toggleable name={{ show: 'New Blog', hide: 'Cancel' }} ref={toggleableRef}>
+        <AddBlog blogs={blogs} setBlogs={setBlogs} showNotification={showNotification} user={user} />
+      </Toggleable>
 
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />

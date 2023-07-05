@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const AddBlog = ({ blogs, setBlogs, showNotification }) => {
+const AddBlog = ({ blogs, setBlogs, showNotification, user }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -27,7 +27,10 @@ const AddBlog = ({ blogs, setBlogs, showNotification }) => {
 
     try {
       const newBlog = await blogService.create({ title, author, url })
-      setBlogs([...blogs, newBlog])
+      // on GET request user info is populated  but not POST request
+      // so user info is manually added when setBlog is used
+      // so that the submitter can be seen when blog is first added
+      setBlogs([...blogs, {...newBlog, user}])
       showNotification(`New blog ${title} by ${author} added!`, false)
       setTitle('')
       setAuthor('')
@@ -42,17 +45,17 @@ const AddBlog = ({ blogs, setBlogs, showNotification }) => {
       <form onSubmit={handleSubmit}>
         <h2>Add Blog</h2>
         <div>
-          <label>Title: </label>
+          <label>Title</label>
           <input name="title" value={title} onChange={handleChange}></input>
         </div>
 
         <div>
-          <label>Author: </label>
+          <label>Author</label>
           <input name="author" value={author} onChange={handleChange}></input>
         </div>
 
         <div>
-          <label>Url: </label>
+          <label>Url</label>
           <input name="url" value={url} onChange={handleChange}></input>
         </div>
         <button>Add</button>
