@@ -28,7 +28,7 @@ test('blog title and author are rendered, but not url and likes by default', () 
   expect(url).toBe(null)
 })
 
-test('when view button is clicked, url and likes should be visible', () => {
+test('when view button is clicked, url and likes should be visible', async () => {
   const blog = {
     title: 'Blog Test',
     author: 'Test Man',
@@ -53,6 +53,28 @@ test('when view button is clicked, url and likes should be visible', () => {
   expect(likes).toBeDefined()
 })
 
-test('if like button is clicked twice, event handler is called twice', () => {
+test('if like button is clicked twice, event handler is called twice', async () => {
+  const blog = {
+    title: 'Blog Test',
+    author: 'Test Man',
+    likes: 43,
+    url: 'testtest.com',
+    user: {
+      username: 'TestMaster'
+    }
+  }
 
+  const mockFunction = jest.fn()
+
+  const user = userEvent.setup()
+
+  render(<Blog blog={blog} likeBlog={mockFunction} />)
+
+  const viewButton = screen.getByRole('button', { name: 'View' })
+  await user.click(viewButton)
+  const likeButton = screen.getByRole('button', { name: 'Like' })
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockFunction.mock.calls).toHaveLength(2)
 })

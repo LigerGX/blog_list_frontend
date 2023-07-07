@@ -35,7 +35,7 @@ const App = () => {
     window.localStorage.removeItem('user')
   }
 
-  const updateBlog = async (blog) => {
+  const likeBlog = async (blog) => {
     const updatedBlog = {
       author: blog.author,
       title: blog.title,
@@ -63,6 +63,19 @@ const App = () => {
     }
   }
 
+  const createBlog = async (title, author, url) => {
+    try {
+      const newBlog = await blogService.create({ title, author, url })
+      // on GET request user info is populated  but not POST request
+      // so user info is manually added when setBlog is used
+      // so that the submitter can be seen when blog is first added
+      setBlogs([...blogs, { ...newBlog, user }])
+      showNotification(`New blog ${title} by ${author} added!`, false)
+    } catch (error) {
+      console.error(error.response.data)
+    }
+  }
+
   const showNotification = (message, error) => {
     setNotification({ message, error })
     setTimeout(() => {
@@ -85,7 +98,7 @@ const App = () => {
       {notification && <Notification notification={notification} />}
 
       <Toggleable name={{ show: 'New Blog', hide: 'Cancel' }} ref={toggleableRef}>
-        <AddBlog blogs={blogs} setBlogs={setBlogs} showNotification={showNotification} user={user} />
+        <AddBlog createBlog={createBlog} />
       </Toggleable>
 
       {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
@@ -93,7 +106,7 @@ const App = () => {
           key={blog.id}
           blog={blog}
           removeBlog={removeBlog}
-          updateBlog={updateBlog}
+          likeBlog={likeBlog}
         />
       )}
     </div>
