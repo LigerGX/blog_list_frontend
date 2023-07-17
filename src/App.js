@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
-      setBlogs(blogs)
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
     }
     )
   }, [])
@@ -45,8 +45,13 @@ const App = () => {
 
     try {
       const res = await blogService.update(updatedBlog, blog.id)
-      const filteredBlogs = blogs.filter(item => item.id !== blog.id)
-      setBlogs([...filteredBlogs, { ...res, user }])
+      const blogIndex = blogs.findIndex(item => {
+        return item.id === blog.id
+      })
+
+      const newBlogs = [...blogs]
+      newBlogs[blogIndex] = { ...res, user }
+      setBlogs(newBlogs)
     } catch (error) {
       console.error(error.response.data)
     }
@@ -91,7 +96,7 @@ const App = () => {
 
   return (
     <div>
-      <header>
+      <header data-cy="header">
         <h1>Blog Collection</h1>
         <p>{user.username} is logged in <span><button onClick={handleLogout}>Logout</button></span></p>
       </header>
@@ -101,14 +106,17 @@ const App = () => {
         <AddBlog createBlog={createBlog} />
       </Toggleable>
 
-      {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          removeBlog={removeBlog}
-          likeBlog={likeBlog}
-        />
-      )}
+      <div className="blog-list-container">
+        {blogs.map(blog =>
+          <Blog
+            key={blog.id}
+            blog={blog}
+            removeBlog={removeBlog}
+            likeBlog={likeBlog}
+            user={user}
+          />
+        )}
+      </div>
     </div>
   )
 }

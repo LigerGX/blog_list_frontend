@@ -20,6 +20,7 @@ const Login = ({ setUser, notification, showNotification }) => {
 
     try {
       const user = await loginService.login({ username, password })
+      console.log(user)
       setUsername('')
       setPassword('')
       setUser(user)
@@ -40,16 +41,29 @@ const Login = ({ setUser, notification, showNotification }) => {
         <h2>Log in to application</h2>
         {notification && <Notification notification={notification} />}
         <div>
-          <label>Username: </label>
-          <input name="username" value={username} onChange={handleChange} />
+          <label htmlFor="username">Username: </label>
+          <input
+            name="username"
+            id="username"
+            data-cy="username"
+            value={username}
+            onChange={handleChange}
+          />
         </div>
 
         <div>
-          <label>Password: </label>
-          <input type="password" name="password" value={password} onChange={handleChange} />
+          <label htmlFor="password">Password: </label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            data-cy="password"
+            value={password}
+            onChange={handleChange}
+          />
         </div>
 
-        <button>Login</button>
+        <button id="login-button" data-cy="login">Login</button>
       </form>
     </div>
   )

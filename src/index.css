@@ -60,17 +60,17 @@ input {
   color: rgb(224, 31, 31);
 }
 
-.blogContainer {
+.blog-container {
   padding: 12px 8px;
   border-radius: 6px;
   margin-bottom: 16px;
   background-color:#faf8f8;
 }
 
-.blogContainer > p {
+.blog-container > p {
   margin-bottom: 4px;
 }
 
-.blogContainer > button {
+.blog-container > button {
   background-color: rgb(224, 86, 86);
 }

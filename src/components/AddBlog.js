@@ -35,19 +35,37 @@ const AddBlog = ({ createBlog }) => {
         <h2>Add Blog</h2>
         <div>
           <label htmlFor="title">Title</label>
-          <input name="title" id="title" value={title} onChange={handleChange}></input>
+          <input
+            name="title"
+            id="title"
+            data-cy="title"
+            value={title}
+            onChange={handleChange}
+          />
         </div>
 
         <div>
           <label htmlFor="author">Author</label>
-          <input name="author" id="author" value={author} onChange={handleChange}></input>
+          <input
+            name="author"
+            id="author"
+            data-cy="author"
+            value={author}
+            onChange={handleChange}
+          />
         </div>
 
         <div>
           <label htmlFor="url">Url</label>
-          <input name="url" id="url" value={url} onChange={handleChange}></input>
+          <input
+            name="url"
+            id="url"
+            data-cy="url"
+            value={url}
+            onChange={handleChange}
+          />
         </div>
-        <button>Add</button>
+        <button data-cy="add">Add</button>
       </form>
     </div>
   )
