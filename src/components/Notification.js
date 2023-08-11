@@ -1,9 +1,12 @@
 const Notification = ({ notification }) => {
-  return (
-    <div data-cy="notification" className={notification.error ? 'notification error' : 'notification'}>
-      <p>{notification.message}</p>
-    </div>
-  )
-}
+	return (
+		<div
+			data-cy="notification"
+			className={notification.error ? 'notification error' : 'notification'}
+		>
+			<p>{notification.message}</p>
+		</div>
+	);
+};
 
-export default Notification
+export default Notification;
