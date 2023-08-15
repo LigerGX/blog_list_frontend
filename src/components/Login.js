@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import loginService from '../services/login';
-import blogService from '../services/blogs';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNotification } from '../reducers/notificationReducer';
+import { loginUser } from '../reducers/userReducer';
 import Notification from './Notification';
 
-const Login = ({ setUser, notification, showNotification }) => {
+const Login = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const notification = useSelector((state) => state.notification);
+	const dispatch = useDispatch();
 
 	const handleChange = (e) => {
 		if (e.target.name === 'username') {
@@ -19,15 +22,16 @@ const Login = ({ setUser, notification, showNotification }) => {
 		e.preventDefault();
 
 		try {
-			const user = await loginService.login({ username, password });
-			console.log(user);
+			dispatch(loginUser({ username, password }));
 			setUsername('');
 			setPassword('');
-			setUser(user);
-			window.localStorage.setItem('user', JSON.stringify(user));
-			blogService.setToken(user.token);
 		} catch (error) {
-			showNotification(`${error.response.data.error}`, true);
+			dispatch(
+				setNotification({
+					message: `${error.response.data.error}`,
+					error: true,
+				})
+			);
 			console.error(error.response.data);
 		}
 	};

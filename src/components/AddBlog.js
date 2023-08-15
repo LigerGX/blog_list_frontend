@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createBlog } from '../reducers/blogsReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
-const AddBlog = ({ createBlog }) => {
+const AddBlog = ({ user }) => {
 	const [title, setTitle] = useState('');
 	const [author, setAuthor] = useState('');
 	const [url, setUrl] = useState('');
+	const dispatch = useDispatch();
 
 	const handleChange = (e) => {
 		switch (e.target.name) {
@@ -23,7 +27,13 @@ const AddBlog = ({ createBlog }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await createBlog(title, author, url);
+		dispatch(createBlog({ title, author, url }, user));
+		dispatch(
+			setNotification({
+				message: `Added ${title} by ${author}`,
+				error: false,
+			})
+		);
 		setTitle('');
 		setAuthor('');
 		setUrl('');

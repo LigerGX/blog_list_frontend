@@ -1,10 +1,38 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateBlog, removeBlog } from '../reducers/blogsReducer';
 
-const Blog = ({ blog, removeBlog, likeBlog, user }) => {
+const Blog = ({ blog, user }) => {
 	const [visible, setVisible] = useState(false);
+	const dispatch = useDispatch();
 
 	const toggleVisibility = () => {
 		setVisible(!visible);
+	};
+
+	const likeBlog = async (blog) => {
+		const updatedBlog = {
+			author: blog.author,
+			title: blog.title,
+			url: blog.url,
+			likes: blog.likes + 1,
+		};
+
+		try {
+			dispatch(updateBlog(updatedBlog, blog.id, blog.user));
+		} catch (error) {
+			console.error(error.response.data);
+		}
+	};
+
+	const deleteBlog = async (blog) => {
+		try {
+			if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
+				dispatch(removeBlog(blog.id));
+			}
+		} catch (error) {
+			console.error.apply(error.response.data);
+		}
 	};
 
 	if (!visible) {
@@ -37,7 +65,7 @@ const Blog = ({ blog, removeBlog, likeBlog, user }) => {
 			</p>
 			<p>Submitted by {blog.user.username}</p>
 			{blog.user.id === user.id && (
-				<button onClick={() => removeBlog(blog)}>Remove</button>
+				<button onClick={() => deleteBlog(blog)}>Remove</button>
 			)}
 		</div>
 	);
