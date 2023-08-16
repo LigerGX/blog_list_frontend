@@ -1,9 +1,25 @@
 import { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { useContext } from 'react';
+import NotificationContext from './NotificationContext';
+import blogsService from '../services/blogs';
 
-const AddBlog = ({ createBlog }) => {
+const AddBlog = () => {
 	const [title, setTitle] = useState('');
 	const [author, setAuthor] = useState('');
 	const [url, setUrl] = useState('');
+
+	const [notification, notificationDispatch] = useContext(NotificationContext);
+	const queryClient = useQueryClient();
+
+	const mutation = useMutation(
+		(newBlog) => {
+			return blogsService.create(newBlog);
+		},
+		{
+			onSuccess: () => queryClient.invalidateQueries('blogs'),
+		}
+	);
 
 	const handleChange = (e) => {
 		switch (e.target.name) {
@@ -23,7 +39,14 @@ const AddBlog = ({ createBlog }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await createBlog(title, author, url);
+		mutation.mutate({ title, author, url });
+		notificationDispatch({
+			type: 'SET',
+			payload: {
+				message: `Added ${title} by ${author}`,
+				error: false,
+			},
+		});
 		setTitle('');
 		setAuthor('');
 		setUrl('');

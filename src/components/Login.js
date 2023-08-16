@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import loginService from '../services/login';
 import blogService from '../services/blogs';
 import Notification from './Notification';
+import NotificationContext from './NotificationContext';
+import UserContext from './UserContext';
 
-const Login = ({ setUser, notification, showNotification }) => {
+const Login = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [notification, notificationDispatch] = useContext(NotificationContext);
+	const [user, userDispatch] = useContext(UserContext);
 
 	const handleChange = (e) => {
 		if (e.target.name === 'username') {
@@ -19,15 +23,20 @@ const Login = ({ setUser, notification, showNotification }) => {
 		e.preventDefault();
 
 		try {
-			const user = await loginService.login({ username, password });
-			console.log(user);
+			const res = await loginService.login({ username, password });
 			setUsername('');
 			setPassword('');
-			setUser(user);
-			window.localStorage.setItem('user', JSON.stringify(user));
-			blogService.setToken(user.token);
+			userDispatch({ type: 'SET', payload: res });
+			window.localStorage.setItem('user', JSON.stringify(res));
+			blogService.setToken(res.token);
 		} catch (error) {
-			showNotification(`${error.response.data.error}`, true);
+			notificationDispatch({
+				type: 'SET',
+				payload: {
+					message: `${error.response.data.error}`,
+					error: true,
+				},
+			});
 			console.error(error.response.data);
 		}
 	};
