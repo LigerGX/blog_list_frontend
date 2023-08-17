@@ -1,10 +1,30 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateBlog, removeBlog } from '../reducers/blogsReducer';
+import { useMutation, useQueryClient } from 'react-query';
+import blogService from '../services/blogs';
 
 const Blog = ({ blog, user }) => {
 	const [visible, setVisible] = useState(false);
 	const dispatch = useDispatch();
+
+	const queryClient = useQueryClient();
+	const likeMutation = useMutation(
+		(update) => {
+			return blogService.update(update.data, update.id);
+		},
+		{
+			onSuccess: () => queryClient.invalidateQueries(),
+		}
+	);
+
+	const removeMutation = useMutation(
+		(id) => {
+			return blogService.remove(id);
+		},
+		{
+			onSuccess: () => queryClient.invalidateQueries(),
+		}
+	);
 
 	const toggleVisibility = () => {
 		setVisible(!visible);
@@ -19,7 +39,7 @@ const Blog = ({ blog, user }) => {
 		};
 
 		try {
-			dispatch(updateBlog(updatedBlog, blog.id, blog.user));
+			likeMutation.mutate({ data: updatedBlog, id: blog.id });
 		} catch (error) {
 			console.error(error.response.data);
 		}
@@ -28,7 +48,7 @@ const Blog = ({ blog, user }) => {
 	const deleteBlog = async (blog) => {
 		try {
 			if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
-				dispatch(removeBlog(blog.id));
+				removeMutation.mutate(blog.id);
 			}
 		} catch (error) {
 			console.error.apply(error.response.data);
@@ -40,10 +60,8 @@ const Blog = ({ blog, user }) => {
 			<div className="blog-container" data-cy="blog-container">
 				<p>
 					{blog.title} by {blog.author}{' '}
-					<span>
-						<button onClick={toggleVisibility}>View</button>
-					</span>
 				</p>
+				<button onClick={toggleVisibility}>View</button>
 			</div>
 		);
 	}
@@ -65,7 +83,9 @@ const Blog = ({ blog, user }) => {
 			</p>
 			<p>Submitted by {blog.user.username}</p>
 			{blog.user.id === user.id && (
-				<button onClick={() => deleteBlog(blog)}>Remove</button>
+				<button className="remove-button" onClick={() => deleteBlog(blog)}>
+					Remove
+				</button>
 			)}
 		</div>
 	);

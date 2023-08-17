@@ -1,15 +1,21 @@
-import { useSelector } from 'react-redux';
+import { useQuery } from 'react-query';
+import blogService from '../services/blogs';
 import Blog from './Blog';
 
 const BlogList = ({ user }) => {
-	// sort method will modify the state in place which is not allowed since that
-	// would violate the immutabiliy requirement of the state, so a copy is made
-	const blogs = useSelector((state) => state.blogs);
-	const blogsCopy = [...blogs];
+	const blogQuery = useQuery('blogs', async () => {
+		return await blogService.getAll();
+	});
+
+	if (blogQuery.isLoading) {
+		return <p>Loading...</p>;
+	}
+
+	const blogs = blogQuery.data;
 
 	return (
-		<div>
-			{blogsCopy
+		<div className="bloglist-container">
+			{blogs
 				.sort((a, b) => b.likes - a.likes)
 				.map((blog) => {
 					return <Blog key={blog.id} blog={blog} user={user} />;

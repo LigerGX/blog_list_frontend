@@ -1,5 +1,4 @@
 body {
-	padding: 48px;
 	font-size: 16px;
 	font-family: 'Nunito Sans';
 	color: #312529;
@@ -14,15 +13,6 @@ h1 {
 h2 {
 	font-size: 1.5rem;
 	margin-bottom: 12px;
-}
-
-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	padding-bottom: 16px;
-	border-bottom: 2px solid #312529;
-	margin-bottom: 24px;
 }
 
 button {
@@ -41,8 +31,35 @@ input {
 	background-color: #faf8f8;
 }
 
-.toggleable {
-	margin-bottom: 16px;
+.main-layout {
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+}
+
+main {
+	margin: 24px 32px;
+}
+
+.header-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	padding: 16px;
+	border-bottom: 2px solid #312529;
+	background-color: #312529;
+	color: white;
+}
+
+.footer-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 24px;
+	background-color: #312529;
+	color: white;
+	font-size: 2rem;
 }
 
 .notification {
@@ -60,10 +77,19 @@ input {
 	color: rgb(224, 31, 31);
 }
 
+.bloglist-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 24px;
+	align-items: flex-start;
+}
+
 .blog-container {
-	padding: 12px 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 16px;
 	border-radius: 6px;
-	margin-bottom: 16px;
 	background-color: #faf8f8;
 }
 
@@ -71,6 +97,39 @@ input {
 	margin-bottom: 4px;
 }
 
-.blog-container > button {
+.remove-button {
 	background-color: rgb(224, 86, 86);
+}
+
+.add-blog-container {
+	display: grid;
+	background-color: #faf8f8;
+	margin: 24px auto;
+	max-width: 400px;
+}
+
+.add-blog-container > form {
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+}
+
+.add-blog-container > button {
+	border-radius: 0px;
+	font-size: 1.4rem;
+}
+
+.add-blog-container > form > div > input {
+	background-color: #ece8e9;
+	padding: 8px 12px;
+	font-size: 16px;
+}
+
+.add-blog-buttons-container {
+	display: flex;
+	align-items: center;
+}
+
+.add-blog-buttons-container > button {
+	margin-right: 12px;
 }

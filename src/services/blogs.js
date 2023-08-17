@@ -36,4 +36,6 @@ const setToken = (newToken) => {
 	token = `Bearer ${newToken}`;
 };
 
-export default { getAll, create, update, remove, setToken };
+const exportObject = { getAll, create, update, remove, setToken };
+
+export default exportObject;

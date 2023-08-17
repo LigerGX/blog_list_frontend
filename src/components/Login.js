@@ -38,9 +38,6 @@ const Login = () => {
 
 	return (
 		<div>
-			<header>
-				<h1>Blog Collection</h1>
-			</header>
 			<form onSubmit={handleLogin}>
 				<h2>Log in to application</h2>
 				{notification && <Notification notification={notification} />}
