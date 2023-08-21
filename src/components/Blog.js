@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient, useQuery } from 'react-query';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import blogService from '../services/blogs';
+import Comments from './Comments';
 
-const Blog = ({ blog, user }) => {
-	const [visible, setVisible] = useState(false);
-	const dispatch = useDispatch();
+const Blog = () => {
+	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
 	const likeMutation = useMutation(
@@ -26,9 +26,20 @@ const Blog = ({ blog, user }) => {
 		}
 	);
 
-	const toggleVisibility = () => {
-		setVisible(!visible);
-	};
+	const user = useSelector((state) => state.user);
+
+	const blogId = useParams().id;
+
+	const res = useQuery('blog', async () => {
+		const result = await blogService.getOne(blogId);
+		return result;
+	});
+
+	if (res.isLoading) {
+		return <p>Loading...</p>;
+	}
+
+	const blog = res.data;
 
 	const likeBlog = async (blog) => {
 		const updatedBlog = {
@@ -49,31 +60,18 @@ const Blog = ({ blog, user }) => {
 		try {
 			if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
 				removeMutation.mutate(blog.id);
+				navigate('/');
 			}
 		} catch (error) {
 			console.error.apply(error.response.data);
 		}
 	};
 
-	if (!visible) {
-		return (
-			<div className="blog-container" data-cy="blog-container">
-				<p>
-					{blog.title} by {blog.author}{' '}
-				</p>
-				<button onClick={toggleVisibility}>View</button>
-			</div>
-		);
-	}
-
 	return (
 		<div className="blog-container" data-cy="blog-container">
-			<p>
-				{blog.title} by {blog.author}{' '}
-				<span>
-					<button onClick={toggleVisibility}>Hide</button>
-				</span>
-			</p>
+			<h2>
+				{blog.title} by {blog.author}
+			</h2>
 			<p>url: {blog.url}</p>
 			<p>
 				Likes: {blog.likes}{' '}
@@ -87,6 +85,7 @@ const Blog = ({ blog, user }) => {
 					Remove
 				</button>
 			)}
+			<Comments />
 		</div>
 	);
 };

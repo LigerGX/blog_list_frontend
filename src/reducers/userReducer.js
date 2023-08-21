@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { setNotification } from './notificationReducer';
 import loginService from '../services/login';
-import blogService from '../services/blogs';
+import { setToken } from '../services/serviceHelper';
 
 const userSlice = createSlice({
 	name: 'user',
@@ -17,10 +18,19 @@ const userSlice = createSlice({
 
 export const loginUser = (credentials) => {
 	return async (dispatch) => {
-		const user = await loginService.login(credentials);
-		dispatch(setUser(user));
-		blogService.setToken(user.token);
-		window.localStorage.setItem('user', JSON.stringify(user));
+		try {
+			const user = await loginService.login(credentials);
+			dispatch(setUser(user));
+			setToken(user.token);
+			window.localStorage.setItem('user', JSON.stringify(user));
+		} catch (error) {
+			dispatch(
+				setNotification({
+					message: `${error.response.data.error}`,
+					error: true,
+				})
+			);
+		}
 	};
 };
 

@@ -5,14 +5,31 @@ body {
 	background-color: #ece8e9;
 }
 
-h1 {
-	font-size: 2.5rem;
+.text-white {
+	color: white;
+}
+
+.text-dark {
+	color: #312529;
+}
+
+a {
+	text-decoration: none;
+	font-size: 1.25rem;
+}
+
+.site-title > a {
+	font-size: 2rem;
 	font-family: 'Work Sans';
 }
 
 h2 {
 	font-size: 1.5rem;
 	margin-bottom: 12px;
+}
+
+h3 {
+	font-size: 1.25rem;
 }
 
 button {
@@ -40,6 +57,11 @@ input {
 
 main {
 	margin: 24px 32px;
+}
+
+nav > ul {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
 }
 
 .header-container {
@@ -80,7 +102,7 @@ main {
 .bloglist-container {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-gap: 24px;
+	grid-gap: 20px;
 	align-items: flex-start;
 }
 
@@ -105,7 +127,7 @@ main {
 	display: grid;
 	background-color: #faf8f8;
 	margin: 24px auto;
-	max-width: 400px;
+	max-width: 500px;
 }
 
 .add-blog-container > form {
@@ -114,15 +136,12 @@ main {
 	padding: 16px;
 }
 
-.add-blog-container > button {
-	border-radius: 0px;
-	font-size: 1.4rem;
-}
-
 .add-blog-container > form > div > input {
 	background-color: #ece8e9;
-	padding: 8px 12px;
+	padding: 8px 0px;
 	font-size: 16px;
+	min-width: 400px;
+	max-width: 500px;
 }
 
 .add-blog-buttons-container {

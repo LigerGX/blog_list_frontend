@@ -1,11 +1,16 @@
 import axios from 'axios';
-const baseUrl = '/api/blogs';
+import { token } from './serviceHelper';
 
-let token = null;
+const baseUrl = 'http://localhost:3000/api/blogs';
 
-const getAll = () => {
-	const req = axios.get(baseUrl);
-	return req.then((res) => res.data);
+const getAll = async () => {
+	const res = await axios.get(baseUrl);
+	return res.data;
+};
+
+const getOne = async (id) => {
+	const res = await axios.get(`${baseUrl}/${id}`);
+	return res.data;
 };
 
 const create = async (newBlog) => {
@@ -32,10 +37,6 @@ const remove = async (id) => {
 	return res.data;
 };
 
-const setToken = (newToken) => {
-	token = `Bearer ${newToken}`;
-};
-
-const exportObject = { getAll, create, update, remove, setToken };
+const exportObject = { getAll, create, update, remove, getOne };
 
 export default exportObject;

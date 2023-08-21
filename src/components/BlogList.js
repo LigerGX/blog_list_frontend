@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 import blogService from '../services/blogs';
-import Blog from './Blog';
 
-const BlogList = ({ user }) => {
+const BlogList = () => {
 	const blogQuery = useQuery('blogs', async () => {
 		return await blogService.getAll();
 	});
@@ -18,7 +18,19 @@ const BlogList = ({ user }) => {
 			{blogs
 				.sort((a, b) => b.likes - a.likes)
 				.map((blog) => {
-					return <Blog key={blog.id} blog={blog} user={user} />;
+					return (
+						<div
+							key={blog.id}
+							className="blog-container"
+							data-cy="blog-container"
+						>
+							<p>
+								<Link to={`/blogs/${blog.id}`}>
+									{blog.title} by {blog.author}
+								</Link>
+							</p>
+						</div>
+					);
 				})}
 		</div>
 	);

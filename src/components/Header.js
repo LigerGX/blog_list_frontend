@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { resetUser } from '../reducers/userReducer';
 
 const Header = () => {
@@ -12,7 +13,25 @@ const Header = () => {
 
 	return (
 		<header className="header-container" data-cy="header">
-			<h1>Blog Collection</h1>
+			<h1 className="site-title">
+				<Link to="/" className="text-white">
+					Blog Collection
+				</Link>
+			</h1>
+			<nav>
+				<ul>
+					<li>
+						<Link to="/users" className="text-white">
+							Users
+						</Link>
+					</li>
+					<li>
+						<Link to="/create" className="text-white">
+							Submit
+						</Link>
+					</li>
+				</ul>
+			</nav>
 			{user && (
 				<p>
 					{user.username} is logged in{' '}

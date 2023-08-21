@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setNotification } from '../reducers/notificationReducer';
 import { useMutation, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import blogService from '../services/blogs';
 
 const AddBlog = () => {
 	const [title, setTitle] = useState('');
 	const [author, setAuthor] = useState('');
 	const [url, setUrl] = useState('');
-	const [visibility, setVisibility] = useState(false);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
 	const addMutation = useMutation(
@@ -49,20 +50,8 @@ const AddBlog = () => {
 		setTitle('');
 		setAuthor('');
 		setUrl('');
+		navigate('/');
 	};
-
-	const toggleVisibility = (e) => {
-		e.preventDefault();
-		setVisibility(!visibility);
-	};
-
-	if (!visibility) {
-		return (
-			<div className="add-blog-container">
-				<button onClick={toggleVisibility}>New Blog</button>
-			</div>
-		);
-	}
 
 	return (
 		<div className="add-blog-container">
@@ -102,7 +91,7 @@ const AddBlog = () => {
 				</div>
 				<div className="add-blog-buttons-container">
 					<button data-cy="add">Add</button>
-					<button onClick={toggleVisibility}>Cancel</button>
+					<button>Cancel</button>
 				</div>
 			</form>
 		</div>
